@@ -30,10 +30,12 @@ def existe_letra_palavra(letra, palavra):
             posicoes.append(i)
     return posicoes
 
+
 def mudar_palavra_oculta(oculta, posicao, letra):
     lista_letras = list(oculta)
     lista_letras[posicao] = letra
     return ''.join(lista_letras)
+
 
 quantidade = 0
 entrada = "SIM"
@@ -50,9 +52,13 @@ while entrada == "SIM" or entrada == "S":
     print(f"Palavra com {quantidade_letras} letras")
     palavra_oculta = palavra.replace(palavra, '*' * len(palavra))
     acertos = 0
+    lista_letras_opinadas = []
     while len(existe_letra_palavra("*", palavra_oculta)):
         print(f"Palavra: {palavra_oculta}")
         entrada = input("Digite uma letra ").upper()
+        while entrada in lista_letras_opinadas:
+            entrada = input(f"A letra {entrada} já foi escolhida. Digite outra letra ").upper()
+        lista_letras_opinadas.append(entrada)
         posicoes = existe_letra_palavra(entrada, palavra)
         if len(posicoes) == 0:
             print(f"Não existe a letra {entrada} nessa palavra")
@@ -62,10 +68,6 @@ while entrada == "SIM" or entrada == "S":
             for posicao in posicoes:
                 palavra_oculta = mudar_palavra_oculta(palavra_oculta, posicao, entrada)
 
+    lista_letras_opinadas = []
     print(f"A palavra é {palavra}")
     entrada = input("Deseja continuar? ").upper()
-
-
-
-
-
