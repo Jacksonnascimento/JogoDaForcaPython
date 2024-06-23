@@ -36,6 +36,28 @@ def mudar_palavra_oculta(oculta, posicao, letra):
     lista_letras[posicao] = letra
     return ''.join(lista_letras)
 
+lista_membros = ["Cabeça", "Tronco", "Braço esquerdo", "Braço direito", "Perna esquerda", "Perna direita"]
+def montar_corpo(quantidade_erros, quantidade_corpos, resultado):
+    if quantidade_erros - 1 == 0 and quantidade_corpos == 1:
+        resultado = f"Corpo {quantidade_corpos} com o (s) membro (s): {lista_membros[quantidade_erros - 1]}"
+        quantidade_erros += 1
+        return quantidade_erros, quantidade_corpos, resultado
+    elif (quantidade_erros - 1) < 6:
+        resultado = resultado + ", " + lista_membros[quantidade_erros - 1]
+        quantidade_erros += 1
+        return quantidade_erros, quantidade_corpos, resultado
+    else:
+        quantidade_corpos += 1
+        resultado = f"Corpo {quantidade_corpos} com o (s) membro (s): {lista_membros[0]}"
+        quantidade_erros = 2  # Começa novamente com o segundo membro
+        return quantidade_erros, quantidade_corpos, resultado
+
+
+
+
+
+
+
 
 quantidade = 0
 entrada = "SIM"
@@ -53,6 +75,9 @@ while entrada == "SIM" or entrada == "S":
     palavra_oculta = palavra.replace(palavra, '*' * len(palavra))
     acertos = 0
     lista_letras_opinadas = []
+    quantidade_erros = 1
+    quantidade_corpos = 1
+    resultado = ''
     while len(existe_letra_palavra("*", palavra_oculta)):
         print(f"Palavra: {palavra_oculta}")
         entrada = input("Digite uma letra ").upper()
@@ -62,6 +87,8 @@ while entrada == "SIM" or entrada == "S":
         posicoes = existe_letra_palavra(entrada, palavra)
         if len(posicoes) == 0:
             print(f"Não existe a letra {entrada} nessa palavra")
+            quantidade_erros, quantidade_corpos, resultado = montar_corpo(quantidade_erros, quantidade_corpos, resultado)
+            print(resultado)
         else:
             print(f"Existe a letra {entrada} na palavra")
             acertos = acertos + 1
